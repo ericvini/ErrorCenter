@@ -10,17 +10,22 @@ namespace ErrorCenter.Models
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new ErrorCenterContext(
+            
+            var context = new ErrorCenterContext(
                 serviceProvider.GetRequiredService<
-                    DbContextOptions<ErrorCenterContext>>()))
-            {
-                // Look for any movies.
-                if (context.Error.Any())
-                {
-                    return;   // DB has been seeded
-                }
+                    DbContextOptions<ErrorCenterContext>>());
 
-                context.Error.AddRange(
+            var UserContext = new UserCenterContext(
+                    serviceProvider.GetRequiredService<
+                        DbContextOptions<UserCenterContext>>());
+
+            // Look for any movies.
+            if (context.Error.Any() && UserContext.User.Any())
+            {
+                 return;   // DB has been seeded
+            }
+
+            context.Error.AddRange(
                     new Error
                     {
                         Title = "accelaration.Service.AddCandidate",
@@ -54,7 +59,42 @@ namespace ErrorCenter.Models
                     }
                 );
                 context.SaveChanges();
-            }
+        
+
+            //using (var UserContext = new UserCenterContext(
+            //        serviceProvider.GetRequiredService<
+            //            DbContextOptions<UserCenterContext>>()))
+            //{
+            //    // Look for any movies.
+            //    if (UserContext.User.Any())
+            //    {
+            //        return;   // DB has been seeded
+            //    }
+
+                UserContext.User.AddRange(
+                    new User
+                    {
+                        Name = "Admin",
+                        Email = "Admin@mybad.com",
+                        Password = "Teste123",
+                    },
+
+                    new User
+                    {
+                        Name = "Teste1",
+                        Email = "teste1@mybad.com",
+                        Password = "Teste123",
+                    },
+
+                    new User
+                    {
+                        Name = "Teste2",
+                        Email = "teste2@mybad.com",
+                        Password = "Teste123",
+                    }
+                );
+                UserContext.SaveChanges();
+            //}
         }
     }
 }
