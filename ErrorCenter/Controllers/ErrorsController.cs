@@ -28,6 +28,12 @@ namespace ErrorCenter.Controllers
             return await _context.Error.ToListAsync();
         }
 
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        {
+            return await _context.User.ToListAsync();
+        }
+
         // GET: api/Movies/searchString
         [HttpGet("{searchString}")]
         public async Task<ActionResult<IEnumerable<Error>>> SearchErrorDescription(string searchString)
@@ -133,13 +139,22 @@ namespace ErrorCenter.Controllers
 
         // POST: api/Errors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("{userId}")]
         public async Task<ActionResult<Error>> PostError(Error error)
         {
             _context.Error.Add(error);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetError", new { id = error.Id }, error);
+        }
+
+        [HttpPost("createuser")]
+        public async Task<ActionResult<User>> PostUser(User user)
+        {
+            _context.User.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Errors/5

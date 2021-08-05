@@ -14,6 +14,8 @@ namespace ErrorCenter.Data
         {
         }
 
-        public DbSet<ErrorCenter.Models.Error> Error { get; set; }
+        public DbSet<ErrorCenter.Models.Error> Error { get; set; } 
+        public DbSet<ErrorCenter.Models.User> User { get; set; }
+
     }
 }

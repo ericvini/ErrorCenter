@@ -32,16 +32,19 @@ namespace ErrorCenter
             services.AddDbContext<ErrorCenterContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ErrorCenterContext")));
 
+            services.AddScoped<SeedData>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedData seedData)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ErrorCenter v1"));
+                seedData.Seed();
             }
 
             app.UseHttpsRedirection();

@@ -12,5 +12,20 @@ namespace ErrorCenter.Models
         public string Description { get; set; }
         public int EventsCount { get; set; }
         public string Level { get; set; }
+        public User User { get; set; }
+
+        public Error()
+        {
+        }
+
+        public Error(string title, string description, int eventsCount, string level, User user)
+        {
+            //Id = id;
+            Title = title;
+            Description = description;
+            EventsCount = eventsCount;
+            Level = level;
+            User = user;
+        }
     }
 }

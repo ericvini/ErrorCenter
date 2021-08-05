@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\ErrorCenter",
-    "\\ErrorCenter\\Controllers"
+    "\\ErrorCenter\\Controllers",
+    "\\ErrorCenter\\Models"
   ],
-  "SelectedNode": "\\ErrorCenter.sln",
+  "SelectedNode": "\\ErrorCenter\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -23,7 +23,7 @@ namespace ErrorCenter
 
                 try
                 {
-                    SeedData.Initialize(services);
+                    //SeedData.Seed(services);
                 }
                 catch (Exception ex)
                 {
