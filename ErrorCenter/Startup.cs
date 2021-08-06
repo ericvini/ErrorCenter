@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ErrorCenter.Data;
+using System.Text.Json.Serialization;
 
 namespace ErrorCenter
 {
@@ -31,6 +32,9 @@ namespace ErrorCenter
 
             services.AddDbContext<ErrorCenterContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ErrorCenterContext")));
+
+            services.AddControllers().AddJsonOptions(x =>
+            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             services.AddScoped<SeedData>();
 

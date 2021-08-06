@@ -25,7 +25,13 @@ namespace ErrorCenter.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Error>>> GetError()
         {
-            return await _context.Error.ToListAsync();
+            var error = await _context.
+                Error.
+                Include(x=>x.User)                  
+                .AsNoTracking()
+                .ToListAsync();
+        
+            return error;
         }
 
         [HttpGet("users")]

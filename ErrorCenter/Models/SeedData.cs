@@ -11,12 +11,12 @@ namespace ErrorCenter.Models
     {
         private ErrorCenterContext _context;
 
-            public SeedData(ErrorCenterContext context)
-             {
-              _context = context;
-             }
+        public SeedData(ErrorCenterContext context)
+        {
+            _context = context;
+        }
 
-            public void Seed()
+        public void Seed()
         {
             // Look for any movies.
             if (_context.Error.Any() || _context.User.Any())

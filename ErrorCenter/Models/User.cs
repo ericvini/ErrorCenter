@@ -11,7 +11,7 @@ namespace ErrorCenter.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public ICollection<Error> Erros { get; set; }
+        public ICollection<Error> Erros { get; set; } = new List<Error>();
 
         public User()
         {
@@ -24,6 +24,12 @@ namespace ErrorCenter.Models
             Name = name;
             Email = email;
             Password = password;
+        }
+
+        public void AddError(Error err)
+        {
+            Erros.Add(err);
+
         }
     }
 }
