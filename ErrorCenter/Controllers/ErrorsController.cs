@@ -29,12 +29,17 @@ namespace ErrorCenter.Controllers
         {
             // Recupera o usuário
             var users = await _context.User.ToListAsync();
+            var userCount = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
+            && x.Password == model.Password).Count();
+
+            if (userCount ==0)
+            {
+                return NotFound(new { message = "Email ou senha inválidos" });
+            }
+
             var user = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
             && x.Password == model.Password).ToList().Cast<User>().ToArray()[0];
-
-            // Verifica se o usuário existe
-            if (user == null)
-                return NotFound(new { message = "Usuário ou senha inválidos" });
+            
 
             // Gera o Token
             var token = TokenService.GenerateToken(user);
