@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 using ErrorCenter.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,12 +84,14 @@ namespace ErrorCenter
             });
 
             services.AddDbContext<ErrorCenterContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ErrorCenterContext")));
+                       options.UseInMemoryDatabase(databaseName: "ErrorCenterContext"));
+            //        options.UseSqlServer(Configuration.GetConnectionString("ErrorCenterContext")));
 
             services.AddControllers().AddJsonOptions(x =>
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             services.AddScoped<SeedData>();
+            
 
         }
 
@@ -113,6 +116,12 @@ namespace ErrorCenter
             {
                 endpoints.MapControllers();
             });
+
+            // Código para rodar as migrations no banco toda vez que a API é iniciada.
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    serviceScope.ServiceProvider.GetService<ErrorCenterContext>().Database.Migrate();
+            //}
         }
     }
 }
