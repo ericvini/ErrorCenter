@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ErrorCenter.Data;
 using ErrorCenter.Models;
+using ErrorCenter.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ErrorCenter.Controllers
 {
@@ -21,8 +23,33 @@ namespace ErrorCenter.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
+        {
+            // Recupera o usuário
+            var users = await _context.User.ToListAsync();
+            var user = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
+            && x.Password == model.Password).ToList().Cast<User>().ToArray()[0];
+
+            // Verifica se o usuário existe
+            if (user == null)
+                return NotFound(new { message = "Usuário ou senha inválidos" });
+
+            // Gera o Token
+            var token = TokenService.GenerateToken(user);
+
+
+            // Retorna os dados
+            return new
+            {
+                //user = user,
+                token = token
+            };
+        }
         // GET: api/Errors
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Error>>> GetError()
         {
             var error = await _context.
