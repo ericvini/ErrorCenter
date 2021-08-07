@@ -49,7 +49,37 @@ namespace ErrorCenter
             });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ErrorCenter", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                { 
+                    Title = "Central de Erros - MyBad",
+                    Version = "v1",
+                    Description = "Central de Erros - Criada com SqlServer, EF Core, JWT e documentada com Swagger"
+                });
+
+                // Ativando autorização
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Insira 'Bearer' [space] e o seu token valido. \r\n\r\n Exemplo: \"Bearer eySdKldfalJSFLSJef435435rtgert42\""
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[]{ }
+                    }
+                });
             });
 
             services.AddDbContext<ErrorCenterContext>(options =>

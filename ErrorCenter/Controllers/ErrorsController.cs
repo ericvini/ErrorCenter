@@ -14,6 +14,7 @@ namespace ErrorCenter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ErrorsController : ControllerBase
     {
         private readonly ErrorCenterContext _context;
@@ -23,38 +24,37 @@ namespace ErrorCenter.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
-        {
-            // Recupera o usuário
-            var users = await _context.User.ToListAsync();
-            var userCount = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
-            && x.Password == model.Password).Count();
+        //[HttpPost]
+        //[Route("login")]
+        //public async Task<ActionResult<dynamic>> Authenticate([FromBody] User model)
+        //{
+        //    // Recupera o usuário
+        //    var users = await _context.User.ToListAsync();
+        //    var userCount = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
+        //    && x.Password == model.Password).Count();
 
-            if (userCount ==0)
-            {
-                return NotFound(new { message = "Email ou senha inválidos" });
-            }
+        //    if (userCount ==0)
+        //    {
+        //        return NotFound(new { message = "Email ou senha inválidos" });
+        //    }
 
-            var user = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
-            && x.Password == model.Password).ToList().Cast<User>().ToArray()[0];
+        //    var user = users.Where(x => x.Email.ToLower() == model.Email.ToLower()
+        //    && x.Password == model.Password).ToList().Cast<User>().ToArray()[0];
             
 
-            // Gera o Token
-            var token = TokenService.GenerateToken(user);
+        //    // Gera o Token
+        //    var token = TokenService.GenerateToken(user);
 
 
-            // Retorna os dados
-            return new
-            {
-                //user = user,
-                token = token
-            };
-        }
+        //    // Retorna os dados
+        //    return new
+        //    {
+        //        //user = user,
+        //        token = token
+        //    };
+        //}
         // GET: api/Errors
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Error>>> GetError()
         {
             var error = await _context.
@@ -186,14 +186,14 @@ namespace ErrorCenter.Controllers
             return CreatedAtAction("GetError", new { id = error.Id }, error);
         }
 
-        [HttpPost("createuser")]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+        //[HttpPost("createuser")]
+        //public async Task<ActionResult<User>> PostUser(User user)
+        //{
+        //    _context.User.Add(user);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
+        //    return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        //}
 
         // DELETE: api/Errors/5
         [HttpDelete("{id}")]
